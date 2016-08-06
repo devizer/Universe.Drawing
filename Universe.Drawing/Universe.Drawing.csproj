@@ -7,8 +7,8 @@
     <ProjectGuid>{7B568C3D-4E2A-423B-8102-E1455ED90BD1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Universe.Bitmap</RootNamespace>
-    <AssemblyName>Universe.Bitmap</AssemblyName>
+    <RootNamespace>Universe.Drawing</RootNamespace>
+    <AssemblyName>Universe.Drawing</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

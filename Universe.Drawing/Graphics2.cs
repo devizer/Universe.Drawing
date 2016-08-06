@@ -1,4 +1,4 @@
-﻿namespace Universe.Bitmap
+﻿namespace Universe.Drawing
 {
     using System;
     using System.Threading;

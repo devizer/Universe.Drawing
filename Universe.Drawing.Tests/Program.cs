@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Universe.Bitmap.Tests
+namespace Universe.Drawing.Tests
 {
     using System.Diagnostics;
     using System.Drawing;
