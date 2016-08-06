@@ -8,5 +8,5 @@ install:
 script:
   - xbuild $TRAVIS_SOLUTION /t:Rebuild /p:Configuration=Release /verbosity:minimal
   - xbuild $TRAVIS_SOLUTION /t:Rebuild /p:Configuration=Debug   /verbosity:minimal
-  - mono Universe.Drawing.Tests\bin\Release\Universe.Bitmap.Tests.exe 
+  - mono Universe.Drawing.Tests\bin\Release\Universe.Drawing.Tests.exe
   
