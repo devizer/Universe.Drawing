@@ -39,8 +39,13 @@ namespace Universe.Drawing.Tests
                 bmp2 = BitmapReader.Read(fs);
             }
 
-            var working = AntiAliasing.SimpleUpScale(bmp2, 8);
-            ProfileDownscale(bmp2, working, 8);
+            int scale =
+                Environment.OSVersion.Platform == PlatformID.Win32NT
+                    ? 8
+                    : 3;
+
+            var working = AntiAliasing.SimpleUpScale(bmp2, scale);
+            ProfileDownscale(bmp2, working, scale);
 
         }
 
