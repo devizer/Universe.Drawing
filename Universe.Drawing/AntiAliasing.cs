@@ -123,7 +123,7 @@
             if (number < 2 || number > 8)
                 throw new ArgumentOutOfRangeException("number");
 
-            if (output.Width*number != bitmap.Width || output.Height*number != bitmap.Height)
+            if (output.Width * number != bitmap.Width || output.Height * number != bitmap.Height)
                 throw new ArgumentException("Output bitmap size should conform input bitmap size and AA scaling");
 
             if (output.Format != bitmap.Format)
@@ -131,23 +131,124 @@
 
             var bw = bitmap.Width;
             var bh = bitmap.Height;
-            if (bw%number != 0 || bh%number != 0)
+            if (bw % number != 0 || bh % number != 0)
                 throw new ArgumentException("Please use the same number as per UpScale method");
 
             var format = bitmap.Format;
             var bpp = format == PixelFormat2.Format32bppArgb ? 4 : 3;
             // int[] sum = new int[bpp];
             int sumB, sumG, sumR, sumA;
-            var width = bw/number;
-            var height = bh/number;
-            var divider = number*number;
+            var width = bw / number;
+            var height = bh / number;
+            var divider = number * number;
+            var strideSource = bitmap.Stride;
+            var strideOutput = output.Stride;
             for (var y = 0; y < height; y++)
             {
-                var pDest = (byte*) (output.Scan0 + y*output.Stride);
+                var pDest = (byte*)(output.Scan0 + y * strideOutput);
+                var pSrc0 = (byte*)(bitmap.Scan0 + y * number * strideSource);
                 for (var x = 0; x < width; x++)
                 {
                     sumB = sumG = sumR = sumA = 0;
-                    var pSrc = (byte*) (bitmap.Scan0 + y*number*bitmap.Stride + x*number*bpp);
+                    var pSrc = pSrc0 + x*number*bpp;
+
+                    for (byte ny = 0; ny < number; ny++)
+                    {
+                        byte* pSrc2 = pSrc;
+                        for (byte nx = 0; nx < number; nx++)
+                        {
+                            if (bpp == 3)
+                            {
+                                ThreeBytes pixel = *(ThreeBytes*)pSrc2;
+                                sumB += pixel.B;
+                                sumG += pixel.G;
+                                sumR += pixel.R;
+                                pSrc2 += 3;
+                            }
+
+                            else
+                            {
+                                Color2 pixel = *(Color2*)pSrc2;
+                                sumB += pixel.B;
+                                sumG += pixel.G;
+                                sumR += pixel.R;
+                                sumA += pixel.A;
+                                pSrc2 += 4;
+                            }
+                        }
+                        
+
+                        pSrc += strideSource;
+                    }
+
+                    if (bpp == 3)
+                    {
+                        ThreeBytes pixel = new ThreeBytes()
+                        {
+                            B = (byte) (sumB/divider),
+                            G = (byte) (sumG/divider),
+                            R = (byte) (sumR/divider)
+                        };
+
+                        *(ThreeBytes*) pDest = pixel;
+                        pDest += 3;
+                    }
+                    else
+                    {
+                        Color2 pixel = new Color2()
+                        {
+                            B = (byte) (sumB/divider),
+                            G = (byte) (sumG/divider),
+                            R = (byte) (sumR/divider),
+                            A = (byte) (sumA/divider),
+                        };
+
+                        *(Color2*)pDest = pixel;
+                        pDest += 4;
+                    }
+/*
+                    *(pDest++) = (byte)(sumB / divider);
+                    *(pDest++) = (byte)(sumG / divider);
+                    *(pDest++) = (byte)(sumR / divider);
+                    if (format == PixelFormat2.Format32bppArgb)
+                        *(pDest++) = (byte)(sumA / divider);
+*/
+                }
+            }
+
+            return output;
+        }
+
+        public static unsafe Bitmap2 SimpleDownscale_Old(Bitmap2 bitmap, int number, Bitmap2 output)
+        {
+            if (number < 2 || number > 8)
+                throw new ArgumentOutOfRangeException("number");
+
+            if (output.Width * number != bitmap.Width || output.Height * number != bitmap.Height)
+                throw new ArgumentException("Output bitmap size should conform input bitmap size and AA scaling");
+
+            if (output.Format != bitmap.Format)
+                throw new ArgumentException("Output and input bitmaps should have same pixel format");
+
+            var bw = bitmap.Width;
+            var bh = bitmap.Height;
+            if (bw % number != 0 || bh % number != 0)
+                throw new ArgumentException("Please use the same number as per UpScale method");
+
+            var format = bitmap.Format;
+            var bpp = format == PixelFormat2.Format32bppArgb ? 4 : 3;
+            // int[] sum = new int[bpp];
+            int sumB, sumG, sumR, sumA;
+            var width = bw / number;
+            var height = bh / number;
+            var divider = number * number;
+            for (var y = 0; y < height; y++)
+            {
+                var pDest = (byte*)(output.Scan0 + y * output.Stride);
+                for (var x = 0; x < width; x++)
+                {
+                    sumB = sumG = sumR = sumA = 0;
+                    var pSrc = (byte*)(bitmap.Scan0 + y * number * bitmap.Stride + x * number * bpp);
 
                     for (var ny = 0; ny < number; ny++)
                     {
@@ -163,11 +264,11 @@
                         pSrc += bitmap.Stride;
                     }
 
-                    *(pDest++) = (byte) (sumB/divider);
-                    *(pDest++) = (byte) (sumG/divider);
-                    *(pDest++) = (byte) (sumR/divider);
+                    *(pDest++) = (byte)(sumB / divider);
+                    *(pDest++) = (byte)(sumG / divider);
+                    *(pDest++) = (byte)(sumR / divider);
                     if (format == PixelFormat2.Format32bppArgb)
-                        *(pDest++) = (byte) (sumA/divider);
+                        *(pDest++) = (byte)(sumA / divider);
                 }
             }
 
@@ -190,9 +291,9 @@
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         private struct ThreeBytes
         {
-            public readonly byte B;
-            public readonly byte G;
-            public readonly byte R;
+            public byte B;
+            public byte G;
+            public byte R;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]

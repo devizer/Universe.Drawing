@@ -1,0 +1,17 @@
+MONO
+Upscale *3 AA 1920x1200: 234 msec
+Downscale 5760x3600 by *3: 1132 msec
+Downscale 5760x3600 by *3: 1134 msec
+Downscale 5760x3600 by *3: 1133 msec
+Downscale 5760x3600 by *3: 1133 msec
+Downscale 5760x3600 by *3: 1134 msec
+Average is 1133 msec
+
+WIN
+Upscale *8 AA 1920x1200: 368 msec
+Downscale 15360x9600 by *8: 695 msec
+Downscale 15360x9600 by *8: 790 msec
+Downscale 15360x9600 by *8: 697 msec
+Downscale 15360x9600 by *8: 693 msec
+Downscale 15360x9600 by *8: 718 msec
+Average is 718 msec

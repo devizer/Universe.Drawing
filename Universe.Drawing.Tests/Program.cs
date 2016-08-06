@@ -18,8 +18,8 @@ namespace Universe.Drawing.Tests
         static void Main(string[] args)
         {
             PrepareDownscleProfiler();
-            return;
             Run4();
+            return;
             Run1();
             Run2();
             Run3();
@@ -98,6 +98,8 @@ namespace Universe.Drawing.Tests
 
                 using (FileStream fs = new FileStream(name, FileMode.Create, FileAccess.Write))
                     BitmapWriter.Write(bmp, fs);
+
+                return;
 
             }
         }
