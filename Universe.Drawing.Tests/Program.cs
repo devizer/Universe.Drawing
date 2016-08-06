@@ -39,8 +39,8 @@ namespace Universe.Bitmap.Tests
                 bmp2 = BitmapReader.Read(fs);
             }
 
-            var working = AntiAliasing.SimpleUpScale(bmp2, 4);
-            ProfileDownscale(bmp2, working, 4);
+            var working = AntiAliasing.SimpleUpScale(bmp2, 8);
+            ProfileDownscale(bmp2, working, 8);
 
         }
 
