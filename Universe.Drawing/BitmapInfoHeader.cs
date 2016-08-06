@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
-
-namespace Universe.Bitmap
+﻿namespace Universe.Bitmap
 {
+    using System;
+    using System.Runtime.InteropServices;
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct BITMAPFILEHEADER
     {
@@ -15,7 +14,8 @@ namespace Universe.Bitmap
 
         public override string ToString()
         {
-            return string.Format("BITMAPFILEHEADER:{5}BfType: {0},{5}BfSize: {1},{5}BfReserved1: {2},{5}BfReserved2: {3},{5}BfOffBits: {4}", bfType, bfSize, bfReserved1, bfReserved2, bfOffBits,
+            return string.Format("BITMAPFILEHEADER:{5}BfType: {0},{5}BfSize: {1},{5}BfReserved1: {2},{5}BfReserved2: {3},{5}BfOffBits: {4}", bfType,
+                bfSize, bfReserved1, bfReserved2, bfOffBits,
                 Environment.NewLine + "     ");
         }
     }
@@ -23,13 +23,13 @@ namespace Universe.Bitmap
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct BITMAPCOREHEADER
     {
-        public UInt32 bcSize;
-        public UInt16 bcWidth;
-        public UInt16 bcHeight;
-        public UInt16 bcPlanes;
-        public UInt16 bcBitCount;
+        public uint bcSize;
+        public ushort bcWidth;
+        public ushort bcHeight;
+        public ushort bcPlanes;
+        public ushort bcBitCount;
     }
-    
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct BitmapInfoHeader
     {
@@ -47,8 +47,12 @@ namespace Universe.Bitmap
 
         public override string ToString()
         {
-            return string.Format("Bitmap-Info-Header:{11}BiSize: {0},{11}BiWidth: {1},{11}BiHeight: {2},{11}BiPlanes: {3},{11}BiBitCount: {4},{11}BiCompression: {5},{11}BiSizeImage: {6},{11}BiXPelsPerMeter: {7},{11}BiYPelsPerMeter: {8},{11}BiClrUsed: {9},{11}BiClrImportant: {10}", biSize, biWidth, biHeight, biPlanes, biBitCount, biCompression, biSizeImage, biXPelsPerMeter, biYPelsPerMeter, biClrUsed, biClrImportant,
-                Environment.NewLine + "     ");
+            return
+                string.Format(
+                    "Bitmap-Info-Header:{11}BiSize: {0},{11}BiWidth: {1},{11}BiHeight: {2},{11}BiPlanes: {3},{11}BiBitCount: {4},{11}BiCompression: {5},{11}BiSizeImage: {6},{11}BiXPelsPerMeter: {7},{11}BiYPelsPerMeter: {8},{11}BiClrUsed: {9},{11}BiClrImportant: {10}",
+                    biSize, biWidth, biHeight, biPlanes, biBitCount, biCompression, biSizeImage, biXPelsPerMeter, biYPelsPerMeter, biClrUsed,
+                    biClrImportant,
+                    Environment.NewLine + "     ");
         }
 
 /*
@@ -77,5 +81,4 @@ namespace Universe.Bitmap
         }
 */
     }
-
 }

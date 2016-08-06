@@ -1,18 +1,28 @@
 ﻿namespace Universe.Bitmap
 {
     using System;
-    using System.Diagnostics;
     using System.Threading;
 
-    public partial class Graphics2: IDisposable
+    public partial class Graphics2 : IDisposable
     {
         public readonly Bitmap2 Bitmap;
+        private bool _HasRotation;
+
+
+        private float _Rotation;
+
+        // cache
+        private float _RotationCos = 1;
+        private float _RotationSin;
+        public FloatPoint Center;
+        public FloatPoint Scale;
+        public int ScaleAA = 1;
         public Bitmap2 WorkingBitmap;
 
         protected Graphics2()
         {
-            Center = new FloatPoint { H = 0, V = 0 };
-            Scale = new FloatPoint { H = 1, V = 1 };
+            Center = new FloatPoint {H = 0, V = 0};
+            Scale = new FloatPoint {H = 1, V = 1};
             Rotation = 0;
             ScaleAA = 1;
         }
@@ -24,39 +34,41 @@
             ScaleAA = 1;
         }
 
-        public Graphics2(Bitmap2 bitmap, int scaleAA): this()
+        public Graphics2(Bitmap2 bitmap, int scaleAA) : this()
         {
             ScaleAA = scaleAA;
             Bitmap = bitmap;
-            WorkingBitmap = 
+            WorkingBitmap =
                 scaleAA == 1
-                ? bitmap
-                : AntiAliasing.SimpleUpScale(bitmap, scaleAA);
+                    ? bitmap
+                    : AntiAliasing.SimpleUpScale(bitmap, scaleAA);
         }
-
-
-        private float _Rotation = 0;
-        public FloatPoint Center;
-        public FloatPoint Scale;
-        public int ScaleAA = 1;
 
         public float Rotation
         {
-            get {  return _Rotation;}
+            get { return _Rotation; }
             set
             {
                 _Rotation = value;
-                double r = _Rotation*2*Math.PI/360f;
-                _RotationCos = (float)Math.Cos(r);
-                _RotationSin = (float)Math.Sin(r);
+                var r = _Rotation*2*Math.PI/360f;
+                _RotationCos = (float) Math.Cos(r);
+                _RotationSin = (float) Math.Sin(r);
                 _HasRotation = Math.Abs(_Rotation) > 1e-6;
             }
         }
 
-        // cache
-        private float _RotationCos = 1;
-        private float _RotationSin = 0;
-        private bool _HasRotation = false;
+        public void Dispose()
+        {
+            if (ScaleAA != 1)
+            {
+                var copy = Interlocked.Exchange(ref WorkingBitmap, null);
+                if (copy != null)
+                {
+                    AntiAliasing.SimpleDownscale(copy, ScaleAA, Bitmap);
+                    copy.Dispose();
+                }
+            }
+        }
 
         public Graphics2 SetRotation(float rotation)
         {
@@ -72,7 +84,7 @@
 
         public Graphics2 SetCenter(float xCenter, float yCenter)
         {
-            Center = new FloatPoint { H = xCenter, V = yCenter};
+            Center = new FloatPoint {H = xCenter, V = yCenter};
             return this;
         }
 
@@ -104,22 +116,9 @@
                 x = x1;
             }
 
-            x = (x + Center.H) * Scale.H * ScaleAA;
-            y = (y + Center.V) * Scale.V * ScaleAA;
+            x = (x + Center.H)*Scale.H*ScaleAA;
+            y = (y + Center.V)*Scale.V*ScaleAA;
             return new FloatPoint {H = x, V = y};
-        }
-
-        public void Dispose()
-        {
-            if (ScaleAA != 1)
-            {
-                var copy = Interlocked.Exchange(ref WorkingBitmap, null);
-                if (copy != null)
-                {
-                    AntiAliasing.SimpleDownscale(copy, ScaleAA, Bitmap);
-                    copy.Dispose();
-                }
-            }
         }
     }
 
