@@ -9,12 +9,15 @@ namespace Universe.Drawing
 
     partial class Graphics2
     {
-        private void FillDraftEllipse(Bitmap2 bitmap,
+        
+        
+        public void FillEllipse(
             float xCenter, float yCenter,
             float xRadius, float yRadius,
             Color2 color)
         {
 
+            var bitmap = WorkingBitmap;
             float dx = 1f / (ScaleAA * Scale.H);
             float dy = 1f / (ScaleAA * Scale.V);
             float xRadius2 = xRadius * xRadius;

@@ -109,6 +109,35 @@ namespace Universe.Drawing.Tests
                         
                     }
 
+                    int marginH = 130;
+                    int marginV = 99;
+                    for (int dx = -1; dx <= 1; dx += 2)
+                        for (int dy = -1; dy <= 1; dy += 2)
+                        {
+                            float x = bmp.Width / 2f + (bmp.Width / 2f - marginH) * dx;
+                            float y = bmp.Height / 2f + (bmp.Height / 2f - marginV) * dy;
+                            for (int rotation = 45; rotation <= 135; rotation += 90)
+                            {
+                                g.Reset()
+                                    .SetCenter(x, y)
+                                    .SetRotation(rotation)
+                                    // .DrawEllipse(0, 0, marginV / 1.4142f, marginV / 1.4142f/2, 0, 360, new Color2(43, 38, 107), w);
+                                    .DrawEllipse(0, 0, marginV / 1.4142f, marginV / 1.4142f/2, 0, 360, new Color2(255,255,255), w);
+
+                            }
+
+                            for (int rotation = 45; rotation <= 135; rotation += 90)
+                            {
+                                g.Reset()
+                                    .SetCenter(x, y)
+                                    .SetRotation(rotation)
+                                    .FillEllipse(0, 0, marginV / 1.4142f - w / 2f + 0.5f, marginV / 1.4142f / 2 - w / 2f + 0.5f, new Color2(43, 38, 107));
+                                    
+
+                            }
+
+                        }
+
                     using(FileStream fs = new FileStream(nameDraft, FileMode.Create, FileAccess.Write))
                         BitmapWriter.Write(g.WorkingBitmap, fs);
                 }
@@ -116,7 +145,7 @@ namespace Universe.Drawing.Tests
                 using (FileStream fs = new FileStream(name, FileMode.Create, FileAccess.Write))
                     BitmapWriter.Write(bmp, fs);
 
-                // return;
+                return;
 
             }
         }
