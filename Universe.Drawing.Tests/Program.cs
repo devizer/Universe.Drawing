@@ -145,7 +145,7 @@ namespace Universe.Drawing.Tests
                 using (FileStream fs = new FileStream(name, FileMode.Create, FileAccess.Write))
                     BitmapWriter.Write(bmp, fs);
 
-                return;
+                // return;
 
             }
         }
