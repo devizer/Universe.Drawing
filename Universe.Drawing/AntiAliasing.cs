@@ -16,13 +16,14 @@
             var bh = input.Height;
             var format = input.Format;
             var bpp = format == PixelFormat2.Format32bppArgb ? 4 : 3;
-            var output = new Bitmap2(bw*number, bh*number, format);
+            var is3Bpp = bpp == 3;
+            var output = new Bitmap2(bw * number, bh * number, format);
             var sw = Stopwatch.StartNew();
             var block32PerLine = output.Stride/32;
             for (var y = 0; y < bh; y++)
             {
                 // Coping one row
-                if (bpp == 3)
+                if (is3Bpp)
                 {
                     var pSrc = (ThreeBytes*) (input.Scan0 + y*input.Stride);
                     var pDest = (ThreeBytes*) (output.Scan0 + y*number*output.Stride);
@@ -79,11 +80,12 @@
             var bh = bitmap.Height;
             var format = bitmap.Format;
             var bpp = format == PixelFormat2.Format32bppArgb ? 4 : 3;
-            var bmp = new Bitmap2(bw*number, bh*number, format);
+            var is3Bpp = bpp == 3;
+            var bmp = new Bitmap2(bw * number, bh * number, format);
             var sw = Stopwatch.StartNew();
             for (var y = 0; y < bh; y++)
             {
-                if (bpp == 3)
+                if (is3Bpp)
                 {
                     for (var ny = 0; ny < number; ny++)
                     {
@@ -129,17 +131,18 @@
             if (output.Format != input.Format)
                 throw new ArgumentException("Output and input bitmaps should have same pixel format");
 
-            var bw = input.Width;
-            var bh = input.Height;
-            if (bw % number != 0 || bh % number != 0)
+            var inputWidth = input.Width;
+            var inputHeight = input.Height;
+            if (inputWidth % number != 0 || inputHeight % number != 0)
                 throw new ArgumentException("Please use the same number as per UpScale method");
 
             var format = input.Format;
             var bpp = format == PixelFormat2.Format32bppArgb ? 4 : 3;
+            bool is3Bpp = bpp == 3;
             // int[] sum = new int[bpp];
             int sumB, sumG, sumR, sumA;
-            var width = bw / number;
-            var height = bh / number;
+            var width = inputWidth / number;
+            var height = inputHeight / number;
             var divider = number * number;
             var strideSource = input.Stride;
             var strideOutput = output.Stride;
@@ -157,7 +160,7 @@
                         byte* pSrc2 = pSrc;
                         for (byte nx = 0; nx < number; nx++)
                         {
-                            if (bpp == 3)
+                            if (is3Bpp)
                             {
                                 ThreeBytes pixel = *(ThreeBytes*)pSrc2;
                                 sumB += pixel.B;
@@ -180,27 +183,23 @@
                         pSrc += strideSource;
                     }
 
-                    if (bpp == 3)
+                    if (is3Bpp)
                     {
-                        ThreeBytes pixel = new ThreeBytes()
-                        {
-                            B = (byte) (sumB/divider),
-                            G = (byte) (sumG/divider),
-                            R = (byte) (sumR/divider),
-                        };
+                        ThreeBytes pixel = new ThreeBytes(
+                            (byte) (sumB/divider),
+                            (byte) (sumG/divider),
+                            (byte) (sumR/divider));
 
                         *(ThreeBytes*) pDest = pixel;
                         pDest += 3;
                     }
                     else
                     {
-                        Color2 pixel = new Color2()
-                        {
-                            B = (byte) (sumB/divider),
-                            G = (byte) (sumG/divider),
-                            R = (byte) (sumR/divider),
-                            A = (byte) (sumA/divider),
-                        };
+                        Color2 pixel = new Color2(
+                            (byte) (sumR/divider),
+                            (byte) (sumG/divider),
+                            (byte) (sumB/divider),
+                            (byte) (sumA/divider));
 
                         *(Color2*)pDest = pixel;
                         pDest += 4;
@@ -293,6 +292,13 @@
             public byte B;
             public byte G;
             public byte R;
+
+            public ThreeBytes(byte b, byte g, byte r)
+            {
+                B = b;
+                G = g;
+                R = r;
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]

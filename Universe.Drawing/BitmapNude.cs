@@ -54,8 +54,7 @@
             get
             {
                 if (Scan0 == IntPtr.Zero) ThrowODE();
-                var ptr = Scan0 + Stride*(Height - y - 1) + (Format == PixelFormat2.Format32bppArgb ? x*4 : x*3);
-                var p = (byte*) ptr;
+                byte* p = (byte*) (Scan0 + Stride*(Height - y - 1) + (Format == PixelFormat2.Format32bppArgb ? x*4 : x*3));
                 var b = *(p++);
                 var g = *(p++);
                 var r = *(p++);
@@ -65,8 +64,7 @@
             set
             {
                 if (Scan0 == IntPtr.Zero) ThrowODE();
-                var ptr = Scan0 + Stride*(Height - y - 1) + (Format == PixelFormat2.Format32bppArgb ? x*4 : x*3);
-                var p = (byte*) ptr;
+                byte* p = (byte*) (Scan0 + Stride*(Height - y - 1) + (Format == PixelFormat2.Format32bppArgb ? x*4 : x*3));
                 *(p++) = value.B;
                 *(p++) = value.G;
                 *(p++) = value.R;
