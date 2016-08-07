@@ -10,3 +10,4 @@ Bitmap, Graphics, Bezier, Ellipse, Text, Anti aliasing (SSAA)
 
 ### First demo
 Ellipses where drawn using Universe.Drawing and stored into bmp-file
+![ellipsis](https://github.com/devizer/Universe.Drawing/raw/master/Screenshots/D1-Ellipse-AA8-8W.jpg "Ellipsis")
