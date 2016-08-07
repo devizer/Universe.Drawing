@@ -9,5 +9,7 @@ Bitmap, Graphics, Bezier, Ellipse, Text, Anti aliasing (SSAA)
 - tests
 
 ### First demo
-AA of Ellipses on a photo. They drawn using Universe.Drawing and stored into bmp-file
-![ellipsis](https://github.com/devizer/Universe.Drawing/raw/master/Screenshots/D1-Ellipse-AA8-8W.jpg "Ellipsis")
+AA of Ellipses on a photo. Brush width is 1 pixel
+![ellipsis](https://github.com/devizer/Universe.Drawing/raw/master/Screenshots/D1-Ellipse-AA8-1W.jpg "Ellipsis 1px")
+AA of Ellipses on a photo. Brush width is 8 pixels
+![ellipsis](https://github.com/devizer/Universe.Drawing/raw/master/Screenshots/D1-Ellipse-AA8-8W.jpg "Ellipsis 8px")
