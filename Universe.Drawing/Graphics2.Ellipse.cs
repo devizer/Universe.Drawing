@@ -12,7 +12,7 @@
             var maxRadius = Math.Max(xRadius, yRadius);
             var length2PiR = 2*Math.PI*maxRadius;
             var step = (float) (1/length2PiR);
-            var count = (int) (length2PiR*1.01 + 1);
+            var count = (int) (length2PiR* ScaleAA * 1.01 + 1);
             var a0 = (float) (angleStart/2/Math.PI);
             var aStep = (float) (((angleEnd - angleStart)/360*2*Math.PI)/count);
             for (var i = 0; i <= count; i++)
@@ -45,7 +45,7 @@
                 // 4: -1.5, -0.5, +0.5, +1.5 
                 for (var i = 0; i < count; i++)
                 {
-                    var offset = (i - (count - 1)/2f)/ScaleAA;
+                    var offset = (i - (count - 1)/3f)/ScaleAA;
                     Debug.WriteLine("Count={0} Offset={1}", count, offset);
                     DrawDraftEllipse(WorkingBitmap,
                         xCenter, yCenter,
