@@ -118,35 +118,35 @@
         }
 
 
-        public static unsafe Bitmap2 SimpleDownscale(Bitmap2 bitmap, int number, Bitmap2 output)
+        public static unsafe Bitmap2 SimpleDownscale(Bitmap2 input, int number, Bitmap2 output)
         {
             if (number < 2 || number > 8)
                 throw new ArgumentOutOfRangeException("number");
 
-            if (output.Width * number != bitmap.Width || output.Height * number != bitmap.Height)
+            if (output.Width * number != input.Width || output.Height * number != input.Height)
                 throw new ArgumentException("Output bitmap size should conform input bitmap size and AA scaling");
 
-            if (output.Format != bitmap.Format)
+            if (output.Format != input.Format)
                 throw new ArgumentException("Output and input bitmaps should have same pixel format");
 
-            var bw = bitmap.Width;
-            var bh = bitmap.Height;
+            var bw = input.Width;
+            var bh = input.Height;
             if (bw % number != 0 || bh % number != 0)
                 throw new ArgumentException("Please use the same number as per UpScale method");
 
-            var format = bitmap.Format;
+            var format = input.Format;
             var bpp = format == PixelFormat2.Format32bppArgb ? 4 : 3;
             // int[] sum = new int[bpp];
             int sumB, sumG, sumR, sumA;
             var width = bw / number;
             var height = bh / number;
             var divider = number * number;
-            var strideSource = bitmap.Stride;
+            var strideSource = input.Stride;
             var strideOutput = output.Stride;
             for (var y = 0; y < height; y++)
             {
                 var pDest = (byte*)(output.Scan0 + y * strideOutput);
-                var pSrc0 = (byte*)(bitmap.Scan0 + y * number * strideSource);
+                var pSrc0 = (byte*)(input.Scan0 + y * number * strideSource);
                 for (var x = 0; x < width; x++)
                 {
                     sumB = sumG = sumR = sumA = 0;
@@ -177,7 +177,6 @@
                             }
                         }
                         
-
                         pSrc += strideSource;
                     }
 
@@ -187,7 +186,7 @@
                         {
                             B = (byte) (sumB/divider),
                             G = (byte) (sumG/divider),
-                            R = (byte) (sumR/divider)
+                            R = (byte) (sumR/divider),
                         };
 
                         *(ThreeBytes*) pDest = pixel;
