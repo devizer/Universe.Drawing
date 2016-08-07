@@ -12,16 +12,16 @@
             var maxRadius = Math.Max(xRadius, yRadius);
             var length2PiR = 2*Math.PI*maxRadius;
             var step = (float) (1/length2PiR);
-            var count = (int) (length2PiR* ScaleAA * 1.01 + 1);
+            var count = (int) (length2PiR * ScaleAA * Math.Max(Scale.H, Scale.V) * 1.01 + 1);
             var a0 = (float) (angleStart/2/Math.PI);
-            var aStep = (float) (((angleEnd - angleStart)/360*2*Math.PI)/count);
+            var aStep = (float) (((angleEnd - angleStart)/360f*2f*Math.PI)/count);
             for (var i = 0; i <= count; i++)
             {
                 var angle = a0 + i*aStep;
                 var x = xCenter + Math.Cos(angle)*xRadius;
                 var y = yCenter + Math.Sin(angle)*yRadius;
                 var transformed = GetTransformed((float) x, (float) y);
-                int xi = (int) transformed.H, yi = (int) transformed.V;
+                int xi = (int)(transformed.H + 0.5f), yi = (int)(transformed.V + 0.5f);
                 if (xi >= 0 && yi >= 0 && xi < bw && yi < bh)
                     bitmap[xi, yi] = color;
             }
