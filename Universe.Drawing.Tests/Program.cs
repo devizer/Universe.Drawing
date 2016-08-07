@@ -82,15 +82,32 @@ namespace Universe.Drawing.Tests
                 string nameDraft = "Ellipse-Draft-AA" + aaScale + "-" + w + "W.bmp";
                 using (Graphics2 g = new Graphics2(bmp, aaScale))
                 {
-                    g
-                        .Reset()
-                        .SetCenter(bmp.Width/2f, bmp.Height/2f)
-                        .SetRotation(30)
-                        .DrawEllipse(0, 0, 400, 111, 0, 360, new Color2(2, 0, 32), w)
-                        .SetRotation(90)
-                        .DrawEllipse(0, 0, 400, 111, 0, 360, new Color2(2, 0, 32), w)
-                        .SetRotation(150)
-                        .DrawEllipse(0, 0, 400, 111, 0, 360, new Color2(2, 0, 32), w);
+                    const int r = 400;
+                    var xCenter = bmp.Width / 2f;
+                    var yCenter = bmp.Height / 2f;
+                    for (int rotation = 30; rotation <= 150; rotation += 60)
+                    {
+                        g.Reset()
+                            .SetCenter(xCenter, yCenter)
+                            .SetRotation(rotation)
+                            .DrawEllipse(0, 0, 600, 150, 0, 360, new Color2(43, 107, 39), w);
+                    }
+
+                    for (int angle = 0; angle < 360; angle += 60)
+                    {
+                        var localX = xCenter + 1.78f*r*Math.Cos(angle/360f*2f*Math.PI);
+                        var localY = yCenter + 1.78f*r*Math.Sin(angle/360f*2f*Math.PI);
+
+                        for (int rotation = 0; rotation <= 90; rotation += 90)
+                        {
+                            g.Reset()
+                                .SetCenter((float)localX, (float)localY)
+                                .SetRotation(rotation + angle)
+                                .DrawEllipse(0, 0, r, 111, 0, 360, new Color2(43, 107, 39), w);
+                        }
+
+                        
+                    }
 
                     using(FileStream fs = new FileStream(nameDraft, FileMode.Create, FileAccess.Write))
                         BitmapWriter.Write(g.WorkingBitmap, fs);
@@ -99,7 +116,7 @@ namespace Universe.Drawing.Tests
                 using (FileStream fs = new FileStream(name, FileMode.Create, FileAccess.Write))
                     BitmapWriter.Write(bmp, fs);
 
-                // return;
+                return;
 
             }
         }
