@@ -18,8 +18,8 @@ namespace Universe.Drawing.Tests
         static void Main(string[] args)
         {
             PrepareDownscleProfiler();
-            Run4();
             return;
+            Run4();
             Run1();
             Run2();
             Run3();
