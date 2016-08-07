@@ -7,7 +7,7 @@ xbuild $work/Universe.Drawing.sln /t:Rebuild /p:Configuration=Release /verbosity
 xbuild $work/Universe.Drawing.sln /t:Rebuild /p:Configuration=Debug   /verbosity:minimal
 old=`pwd`
 cd $work/Universe.Drawing.Tests/bin/Release
-mono Universe.Drawing.Tests.exe
+mono --optimize=all Universe.Drawing.Tests.exe
 cd $old
 
 
