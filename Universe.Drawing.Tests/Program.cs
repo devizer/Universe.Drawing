@@ -68,7 +68,7 @@ namespace Universe.Drawing.Tests
 
         private static void Run4()
         {
-            var aaMax = Environment.OSVersion.Platform == PlatformID.Win32NT ? 8 : 6;
+            var aaMax = Environment.OSVersion.Platform == PlatformID.Win32NT ? 8 : 4;
             for(int w = 8; w>=0; w--)
             for (int aaScale = aaMax; aaScale >= 1; aaScale--)
             {
