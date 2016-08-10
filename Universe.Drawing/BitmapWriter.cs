@@ -1,11 +1,12 @@
 ﻿namespace Universe.Drawing
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Security.Cryptography.X509Certificates;
 
-    public class BitmapWriter
+    public partial class BitmapWriter
     {
         public static unsafe void Write(Bitmap2 bitmap, Stream output)
         {
@@ -51,11 +52,12 @@
 
         public static unsafe void WriteGrayScale8Bpp(Bitmap2 bitmap, Stream output)
         {
-            WriteGrayScale8Bpp(bitmap, output, GrayScaleFlavour.Mathematical);
+            WriteGrayScale8Bpp(bitmap, output, GrayScaleFlavour.Human);
         }
         
         public static unsafe void WriteGrayScale8Bpp(Bitmap2 bitmap, Stream output, GrayScaleFlavour flavour)
         {
+            Stopwatch sw = Stopwatch.StartNew();
             const int paletteLength = 4*256;
             var bfh = new BITMAPFILEHEADER
             {
@@ -75,7 +77,7 @@
                 biSizeImage = 0,
                 biXPelsPerMeter = bitmap.PpmX,
                 biYPelsPerMeter = bitmap.PpiY,
-                biClrUsed = 0,
+                biClrUsed = 256,
                 biClrImportant = 0
             };
 
@@ -95,13 +97,24 @@
 
             byte[] palette = new byte[paletteLength];
             int pos = 0;
+            int posSepia = 0;
             for (int i = 0; i <= 255; i++)
             {
-                byte b = (byte) i;
-                palette[pos++] = b;
-                palette[pos++] = b;
-                palette[pos++] = b;
-                palette[pos++] = 255;
+                if (flavour != GrayScaleFlavour.Sepia)
+                {
+                    byte b = (byte) i;
+                    palette[pos++] = b;
+                    palette[pos++] = b;
+                    palette[pos++] = b;
+                    palette[pos++] = 255;
+                }
+                else
+                {
+                    palette[pos++] = _sepia[posSepia++];
+                    palette[pos++] = _sepia[posSepia++];
+                    palette[pos++] = _sepia[posSepia++];
+                    palette[pos++] = 255;
+                }
             }
             output.Write(palette, 0, paletteLength);
 
@@ -126,8 +139,10 @@
                     byte pixel;
                     if (flavour == GrayScaleFlavour.Human)
                         pixel = (byte)((2989 * (int)r + 5870 * (int)g + 1140 * (int)b) / 10000);
-                    else
+                    else if (flavour == GrayScaleFlavour.Mathematical)
                         pixel = (byte) ((((int) b) + ((int) g) + ((int) r))/3);
+                    else
+                        pixel = FindSepiaIndex(r, g, b);
 
                     buffer[x] = pixel;
                 }
@@ -136,12 +151,18 @@
                 ptrSrcLine += bitmap.Stride;
             }
 
+            Console.WriteLine("Write 8 bit " + flavour + " of " + bitmap.Width + "x" + bitmap.Height + ": " + sw.Elapsed);
+
         }
+
+
+
     }
 
     public enum GrayScaleFlavour
     {
         Human,
-        Mathematical
+        Mathematical,
+        Sepia,
     }
 }

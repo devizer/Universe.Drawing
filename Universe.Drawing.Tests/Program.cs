@@ -9,7 +9,6 @@ namespace Universe.Drawing.Tests
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
-    using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
     using Links;
 
@@ -81,10 +80,12 @@ namespace Universe.Drawing.Tests
                 }
 
                 string name = "Ellipse-AA" + aaScale + "-" + w + "W.bmp";
+                string name_Sepia = "Ellipse-AA" + aaScale + "-" + w + "W-Sepia.bmp";
                 string name_GS1 = "Ellipse-AA" + aaScale + "-" + w + "W-GS-Human.bmp";
                 string name_GS2 = "Ellipse-AA" + aaScale + "-" + w + "W-GS-Math.bmp";
                 Console.WriteLine(name);
                 string nameDraft = "Ellipse-Draft-AA" + aaScale + "-" + w + "W.bmp";
+                string nameDraft_Sepia = "Ellipse-Draft-AA" + aaScale + "-" + w + "W-Sepia.bmp";
                 string nameDraft_GS1 = "Ellipse-Draft-AA" + aaScale + "-" + w + "W-GS-Human.bmp";
                 string nameDraft_GS2 = "Ellipse-Draft-AA" + aaScale + "-" + w + "W-GS-Math.bmp";
                 using (Graphics2 g = new Graphics2(bmp, aaScale))
@@ -151,6 +152,11 @@ namespace Universe.Drawing.Tests
                         BitmapWriter.WriteGrayScale8Bpp(g.WorkingBitmap, fs, GrayScaleFlavour.Human);
                     using (FileStream fs = LocalExtentions.CreateCompressedFile(nameDraft_GS2))
                         BitmapWriter.WriteGrayScale8Bpp(g.WorkingBitmap, fs, GrayScaleFlavour.Mathematical);
+
+/*
+                    using (FileStream fs = LocalExtentions.CreateCompressedFile(nameDraft_Sepia))
+                        BitmapWriter.WriteGrayScale8Bpp(g.WorkingBitmap, fs, GrayScaleFlavour.Sepia);
+*/
                 }
 
                 using (FileStream fs = LocalExtentions.CreateCompressedFile(name))
@@ -160,6 +166,8 @@ namespace Universe.Drawing.Tests
                     BitmapWriter.WriteGrayScale8Bpp(bmp, fs, GrayScaleFlavour.Human);
                 using (FileStream fs = LocalExtentions.CreateCompressedFile(name_GS2))
                     BitmapWriter.WriteGrayScale8Bpp(bmp, fs, GrayScaleFlavour.Mathematical);
+                using (FileStream fs = LocalExtentions.CreateCompressedFile(name_Sepia))
+                    BitmapWriter.WriteGrayScale8Bpp(bmp, fs, GrayScaleFlavour.Sepia);
 
                 // return;
 
