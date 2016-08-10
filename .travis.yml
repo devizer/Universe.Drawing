@@ -1,18 +1,17 @@
 language: csharp
-solution: Universe.TinyGZip.sln
+solution: Universe.Drawing.sln
 mono:
   - latest
 install:
   - nuget restore $TRAVIS_SOLUTION
-  - bash travis-plugins/download-ffmpeg-x64.sh && $HOME/bin/ffmpeg -codecs
-  - sudo apt-get install sysbench -y
   - printenv
 script:
-  - bash travis-plugins/sample-ffmpeg.sh
   - xbuild $TRAVIS_SOLUTION /t:Rebuild /p:Configuration=Release /verbosity:minimal
   - xbuild $TRAVIS_SOLUTION /t:Rebuild /p:Configuration=Debug   /verbosity:minimal
-  - mono --desktop packages/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe --labels=On --workers=1 --work=Universe.TinyGZip.Tests/bin/Release Universe.TinyGZip.Tests/bin/Release/Universe.TinyGZip.Tests.dll
-  - bash travis-plugins/show-perfomance.sh
+  - # bash -e test.sh
+  - cd Universe.Drawing.Tests/bin/Release
+  - mono Universe.Drawing.Tests.exe
+
 
 
   

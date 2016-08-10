@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 work=$HOME/.tmp/Universe.Drawing
 rm -rf $work
 mkdir $work
@@ -15,5 +16,3 @@ mono Universe.Drawing.Tests.exe
 
 
 cd $old
-
-
