@@ -10,7 +10,7 @@ script:
   - xbuild $TRAVIS_SOLUTION /t:Rebuild /p:Configuration=Debug   /verbosity:minimal
   - # bash -e test.sh
   - cd Universe.Drawing.Tests/bin/Release
-  - mono Universe.Drawing.Tests.exe
+  - time (mono Universe.Drawing.Tests.exe)
 
 
 
