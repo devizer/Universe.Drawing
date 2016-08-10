@@ -161,7 +161,7 @@
             return s;
         }
 
-        private static void ThrowODE()
+        internal static void ThrowODE()
         {
             var name = typeof (Bitmap2).Name;
             throw new ObjectDisposedException(name + " Disposed. Memory released", name);
@@ -219,6 +219,12 @@
             G = g;
             R = r;
             A = 255;
+        }
+
+        public static byte ToGreyScale(byte r, byte g, byte b)
+        {
+            // 0.2989, 0.5870, 0.1140
+            return (byte) ((2989*(int) r + 5870*(int) g + 1140*(int) b)/30000);
         }
     }
 }

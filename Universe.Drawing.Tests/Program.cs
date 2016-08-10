@@ -79,8 +79,10 @@ namespace Universe.Drawing.Tests
                 }
 
                 string name = "Ellipse-AA" + aaScale + "-" + w + "W.bmp";
+                string name_GS = "Ellipse-AA" + aaScale + "-" + w + "W-GS.bmp";
                 Console.WriteLine(name);
                 string nameDraft = "Ellipse-Draft-AA" + aaScale + "-" + w + "W.bmp";
+                string nameDraft_GS = "Ellipse-Draft-AA" + aaScale + "-" + w + "W-GS.bmp";
                 using (Graphics2 g = new Graphics2(bmp, aaScale))
                 {
                     const int r = 400;
@@ -122,7 +124,6 @@ namespace Universe.Drawing.Tests
                                 g.Reset()
                                     .SetCenter(x, y)
                                     .SetRotation(rotation)
-                                    // .DrawEllipse(0, 0, marginV / 1.4142f, marginV / 1.4142f/2, 0, 360, new Color2(43, 38, 107), w);
                                     .DrawEllipse(0, 0, marginV / 1.4142f, marginV / 1.4142f/2, 0, 360, new Color2(255,255,255), w);
 
                             }
@@ -139,12 +140,18 @@ namespace Universe.Drawing.Tests
 
                         }
 
-                    using(FileStream fs = new FileStream(nameDraft, FileMode.Create, FileAccess.Write))
+                    using (FileStream fs = new FileStream(nameDraft, FileMode.Create, FileAccess.Write))
                         BitmapWriter.Write(g.WorkingBitmap, fs);
+
+                    using (FileStream fs = new FileStream(nameDraft_GS, FileMode.Create, FileAccess.Write))
+                        BitmapWriter.WriteGrayScale8Bpp(g.WorkingBitmap, fs);
                 }
 
                 using (FileStream fs = new FileStream(name, FileMode.Create, FileAccess.Write))
                     BitmapWriter.Write(bmp, fs);
+
+                using (FileStream fs = new FileStream(name_GS, FileMode.Create, FileAccess.Write))
+                    BitmapWriter.WriteGrayScale8Bpp(bmp, fs);
 
                 // return;
 

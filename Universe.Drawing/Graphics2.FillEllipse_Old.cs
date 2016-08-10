@@ -6,8 +6,6 @@ using System.Text;
 
 namespace Universe.Drawing
 {
-    using System.Drawing.Drawing2D;
-
     partial class Graphics2
     {
         
