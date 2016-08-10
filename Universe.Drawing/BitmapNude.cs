@@ -224,7 +224,7 @@
         public static byte ToGreyScale(byte r, byte g, byte b)
         {
             // 0.2989, 0.5870, 0.1140
-            return (byte) ((2989*(int) r + 5870*(int) g + 1140*(int) b)/30000);
+            return (byte) ((2989*(int) r + 5870*(int) g + 1140*(int) b)/10000);
         }
     }
 }

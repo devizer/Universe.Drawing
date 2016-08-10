@@ -125,7 +125,7 @@
                     if (format == PixelFormat2.Format32bppArgb) ptrSrcPixel++;
                     byte pixel;
                     if (flavour == GrayScaleFlavour.Human)
-                        pixel = (byte)((2989 * (int)r + 5870 * (int)g + 1140 * (int)b) / 30000);
+                        pixel = (byte)((2989 * (int)r + 5870 * (int)g + 1140 * (int)b) / 10000);
                     else
                         pixel = (byte) ((((int) b) + ((int) g) + ((int) r))/3);
 
@@ -137,11 +137,11 @@
             }
 
         }
+    }
 
-        public enum GrayScaleFlavour
-        {
-            Human,
-            Mathematical
-        }
+    public enum GrayScaleFlavour
+    {
+        Human,
+        Mathematical
     }
 }
