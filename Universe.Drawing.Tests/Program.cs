@@ -11,6 +11,8 @@ namespace Universe.Drawing.Tests
     using System.IO;
     using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
+    using Links;
+
     using TinyGZip;
 
     class Program
@@ -142,21 +144,21 @@ namespace Universe.Drawing.Tests
 
                         }
 
-                    using (FileStream fs = new FileStream(nameDraft, FileMode.Create, FileAccess.Write))
+                    using (FileStream fs = LocalExtentions.CreateCompressedFile(nameDraft))
                         BitmapWriter.Write(g.WorkingBitmap, fs);
 
-                    using (FileStream fs = new FileStream(nameDraft_GS1, FileMode.Create, FileAccess.Write))
+                    using (FileStream fs = LocalExtentions.CreateCompressedFile(nameDraft_GS1))
                         BitmapWriter.WriteGrayScale8Bpp(g.WorkingBitmap, fs, GrayScaleFlavour.Human);
-                    using (FileStream fs = new FileStream(nameDraft_GS2, FileMode.Create, FileAccess.Write))
+                    using (FileStream fs = LocalExtentions.CreateCompressedFile(nameDraft_GS2))
                         BitmapWriter.WriteGrayScale8Bpp(g.WorkingBitmap, fs, GrayScaleFlavour.Mathematical);
                 }
 
-                using (FileStream fs = new FileStream(name, FileMode.Create, FileAccess.Write))
+                using (FileStream fs = LocalExtentions.CreateCompressedFile(name))
                     BitmapWriter.Write(bmp, fs);
 
-                using (FileStream fs = new FileStream(name_GS1, FileMode.Create, FileAccess.Write))
+                using (FileStream fs = LocalExtentions.CreateCompressedFile(name_GS1))
                     BitmapWriter.WriteGrayScale8Bpp(bmp, fs, GrayScaleFlavour.Human);
-                using (FileStream fs = new FileStream(name_GS2, FileMode.Create, FileAccess.Write))
+                using (FileStream fs = LocalExtentions.CreateCompressedFile(name_GS2))
                     BitmapWriter.WriteGrayScale8Bpp(bmp, fs, GrayScaleFlavour.Mathematical);
 
                 // return;
