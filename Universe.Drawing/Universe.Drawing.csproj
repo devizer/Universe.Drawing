@@ -49,6 +49,7 @@
     <Compile Include="Graphics2.DrawEllipse.cs" />
     <Compile Include="Graphics2.FillEllipse.cs" />
     <Compile Include="Graphics2.FillEllipse_Old.cs" />
+    <Compile Include="IntReverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamExtentions.cs" />
   </ItemGroup>

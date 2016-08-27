@@ -17,6 +17,7 @@
             fixed (void* ptrFileHeader = arrFileHeader)
             {
                 bfh = (BITMAPFILEHEADER) Marshal.PtrToStructure((IntPtr) ptrFileHeader, typeof (BITMAPFILEHEADER));
+                bfh = BITMAPFILEHEADER.BE2LE(bfh);
             }
 
             if (bfh.bfType != 0x4D42)
@@ -37,6 +38,7 @@
                 fixed (void* ptrInfoHeader = arrInfoHeader)
                 {
                     infoHeader = (BitmapInfoHeader) Marshal.PtrToStructure((IntPtr) ptrInfoHeader, typeof (BitmapInfoHeader));
+                    infoHeader = BitmapInfoHeader.BE2LE(infoHeader);
                     Debug.WriteLine(infoHeader);
                 }
 

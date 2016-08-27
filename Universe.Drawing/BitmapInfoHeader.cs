@@ -18,6 +18,16 @@
                 bfSize, bfReserved1, bfReserved2, bfOffBits,
                 Environment.NewLine + "     ");
         }
+
+        public static BITMAPFILEHEADER BE2LE(BITMAPFILEHEADER bfh)
+        {
+            BITMAPFILEHEADER ret = bfh;
+            if (BitConverter.IsLittleEndian) return ret;
+            ret.bfOffBits = IntReverter.Int32(ret.bfOffBits);
+            ret.bfSize = IntReverter.Int32(ret.bfSize);
+            ret.bfType = IntReverter.Int16(ret.bfType);
+            return ret;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -44,6 +54,25 @@
         public int biYPelsPerMeter;
         public int biClrUsed;
         public int biClrImportant;
+
+        public static BitmapInfoHeader BE2LE(BitmapInfoHeader infoHeader)
+        {
+            var ret = infoHeader;
+            if (BitConverter.IsLittleEndian) return ret;
+            ret.biSize = IntReverter.Int32(ret.biSize);
+            ret.biWidth = IntReverter.Int32(ret.biWidth);
+            ret.biPlanes = IntReverter.Int16(ret.biPlanes);
+            ret.biBitCount = IntReverter.Int16(ret.biBitCount);
+            ret.biHeight = IntReverter.Int32(ret.biHeight);
+            ret.biCompression = IntReverter.Int32(ret.biCompression);
+            ret.biSizeImage = IntReverter.Int32(ret.biSizeImage);
+            ret.biXPelsPerMeter = IntReverter.Int32(ret.biXPelsPerMeter);
+            ret.biYPelsPerMeter = IntReverter.Int32(ret.biYPelsPerMeter);
+            ret.biClrUsed = IntReverter.Int32(ret.biClrUsed);
+            ret.biClrImportant = IntReverter.Int32(ret.biClrImportant);
+            return ret;
+        }
+
 
         public override string ToString()
         {
@@ -80,5 +109,6 @@
             stream.Write(array, 0, sizeof(BitmapInfoHeader));
         }
 */
+
     }
 }

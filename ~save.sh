@@ -1,5 +1,8 @@
 #!/bin/bash -e
 set -e
+git config user.email ""
+git config user.name "devizer"
+
 git config credential.helper store
 
 echo ''
@@ -18,3 +21,7 @@ git push
 echo ''
 echo *************** STATUS ********************
 git status
+
+
+git config user.email ""
+git config user.name "devizer"
