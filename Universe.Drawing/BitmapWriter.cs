@@ -84,14 +84,16 @@
             };
 
             {
-                var ptr = &bfh;
-                var array = new byte[sizeof (BITMAPFILEHEADER)];
+                var copy = BITMAPFILEHEADER.BE2LE(bfh);
+                var ptr = &copy;
+                var array = new byte[sizeof(BITMAPFILEHEADER)];
                 Marshal.Copy((IntPtr) ptr, array, 0, array.Length);
                 output.Write(array, 0, array.Length);
             }
 
             {
-                var ptr2 = &bih;
+                var copy = BitmapInfoHeader.BE2LE(bih);
+                var ptr2 = &copy;
                 var array = new byte[sizeof (BitmapInfoHeader)];
                 Marshal.Copy((IntPtr) ptr2, array, 0, array.Length);
                 output.Write(array, 0, array.Length);
