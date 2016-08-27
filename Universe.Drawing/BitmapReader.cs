@@ -25,8 +25,10 @@
 
             Debug.WriteLine(bfh);
 
-            var arrInfoHeaderSize = StreamExtentions.Read(input, 4, "BITMAP-INFO-HEADER's header size is expected");
-            var infoHeaderSize = BitConverter.ToInt32(arrInfoHeaderSize, 0);
+            var arrInfoHeaderSize = StreamExtentions.Read(input, 4, "BITMAP-INFO-HEADER's header size is expected (4 bytes)");
+            byte[] arrInfoHeaderSizeNormal = (byte[]) arrInfoHeaderSize.Clone();
+            if (!BitConverter.IsLittleEndian) Array.Reverse(arrInfoHeaderSizeNormal);
+            var infoHeaderSize = BitConverter.ToInt32(arrInfoHeaderSizeNormal, 0);
             Debug.WriteLine("  BITMAP-INFO-HEADER's header size is " + infoHeaderSize);
 
             if (infoHeaderSize == sizeof (BitmapInfoHeader))
